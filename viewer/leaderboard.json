@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-10T18:27:53.374Z",
+  "updated": "2026-10-11T21:21:39.264Z",
   "entries": [
     {
       "name": "Human",
@@ -440,6 +440,26 @@
       "issue": 49,
       "trackHash": "cc5ed8cd6612685ccb8b16b2a3916435",
       "verifiedAt": "2026-09-22T23:53:17.314Z"
+    },
+    {
+      "name": "Lichen (I'm gonna win)",
+      "github": null,
+      "submitter": "a6f522419bdf5132",
+      "board": "hybrid",
+      "score": 13,
+      "wins": 13,
+      "losses": 15,
+      "doubleKills": 3,
+      "rounds": 31,
+      "seed": 3562867711,
+      "frames": 24816,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.09191650548033527,
+      "hybridMovementMatches": 2281,
+      "hybridMovementFrames": 24816,
+      "issue": 93,
+      "trackHash": "ddafc26683dd7a38ab32e51c209706d3",
+      "verifiedAt": "2026-10-11T21:21:39.263Z"
     },
     {
       "name": "Rapid",
