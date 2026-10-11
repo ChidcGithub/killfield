@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-11T21:21:39.264Z",
+  "updated": "2026-10-11T21:39:05.322Z",
   "entries": [
     {
       "name": "Human",
@@ -380,6 +380,26 @@
       "issue": 90,
       "trackHash": "667920086844fbab68a0c3088bc90dbc",
       "verifiedAt": "2026-10-09T15:38:01.042Z"
+    },
+    {
+      "name": "First 1v1 win (Lichen)",
+      "github": null,
+      "submitter": "a6f522419bdf5132",
+      "board": "hybrid",
+      "score": 15,
+      "wins": 15,
+      "losses": 10,
+      "doubleKills": 1,
+      "rounds": 26,
+      "seed": 2917602777,
+      "frames": 15548,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.10966040648314895,
+      "hybridMovementMatches": 1705,
+      "hybridMovementFrames": 15548,
+      "issue": 94,
+      "trackHash": "77c65fd51ac09f9e242e20e93d5bfa8a",
+      "verifiedAt": "2026-10-11T21:39:05.322Z"
     },
     {
       "name": "interstellar",
