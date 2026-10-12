@@ -75,7 +75,7 @@ jobs:
           gh auth setup-git
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add viewer/leaderboard.json
+          git add viewer/leaderboard.json viewer/replays
           git commit -m "Add a verified leaderboard record"
           git push
 

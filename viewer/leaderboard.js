@@ -54,7 +54,8 @@ const RULES = {
     ["Submit or keep the replay", "Large records are split automatically when submitted. "
       + "Every finished ranked run can also be downloaded as JSON—including zero-win and "
       + "already-submitted runs—so keep the file before refreshing if online submission fails. "
-      + "Anyone can drop that file into Replay to watch and seek through the run."],
+      + "Anyone can drop that file into Replay to watch and seek through the run. Every "
+      + "record on the board can be watched or downloaded from its row."],
   ],
   zh: [
     [`赢 ${MIN_SUBMITTABLE_WINS} 局即可上榜`, `每个经重放核验的玩家胜场都会计入。一次记录至少赢 `
@@ -78,7 +79,7 @@ const RULES = {
       + "一键提交里的账号只是自报的主页链接，不代表平台核验过账号归属。"],
     ["提交或保存录像", "大录像提交时会自动分块。任何已结束的排位记录都可下载为 JSON——"
       + "包括 0 胜和已提交记录。如果在线提交失败，请在刷新页面前保存文件。"
-      + "任何人都可以把该文件拖入“录像”模式观看并拖动进度。"],
+      + "任何人都可以把该文件拖入“录像”模式观看并拖动进度。榜上每条记录都可以在所在行直接观看或下载。"],
   ],
 };
 
@@ -91,6 +92,9 @@ const COPY = {
       + "Every record here was replayed frame by frame before it landed.",
     rank: "#", player: "Player", score: "Wins", winRate: "Win rate", rounds: "Rounds",
     losses: "Losses", doubleKills: "Double KOs", match: "Hybrid match", when: "Verified",
+    replay: "Replay", watch: "Watch", download: "Download",
+    watchAria: (name) => `Watch ${name}'s replay`,
+    downloadAria: (name) => `Download ${name}'s replay as JSON`,
     humanLane: "Human", botLane: "Bot",
     empty: `Nobody has submitted a win yet. The board is yours to open.`,
     note: "Runs are played at the default settings — no actuation delay for the "
@@ -108,6 +112,9 @@ const COPY = {
     blurb: `一次排位最多记录 ${LIMITS.maxRounds} 局，每个胜场都计分。榜上每条记录都经过逐帧重放核验。`,
     rank: "#", player: "玩家", score: "胜", winRate: "胜率", rounds: "总局数",
     losses: "负", doubleKills: "双亡", match: "Hybrid 移动一致率", when: "核验于",
+    replay: "录像", watch: "观看", download: "下载",
+    watchAria: (name) => `观看 ${name} 的录像`,
+    downloadAria: (name) => `下载 ${name} 的录像（JSON）`,
     humanLane: "Human", botLane: "Bot",
     empty: "还没有人提交胜场。第一个位置空着。",
     note: "成绩一律在默认设置下产生——对手不吃任何动作延迟——并由同一份引擎重放录制的输入重新计分，"
@@ -123,7 +130,7 @@ const NODES = {
   back: "back-label", heading: "board-heading", blurb: "board-blurb",
   rank: "col-rank", player: "col-name", score: "col-score", winRate: "col-win-rate",
   rounds: "col-rounds", losses: "col-losses", doubleKills: "col-double-kills",
-  match: "col-match", when: "col-when", note: "board-note",
+  match: "col-match", when: "col-when", replay: "col-replay", note: "board-note",
   humanLane: "human-tab", botLane: "bot-tab",
   rulesHeading: "rules-heading",
 };
@@ -161,6 +168,29 @@ function entryPlayerClass(entry) {
   // Compatibility for a cached board from before the split. The committed
   // board is backfilled, so this is only a safe display fallback.
   return "human";
+}
+
+/** The archive is named by trackHash, so links are rebuilt from that rather
+ *  than trusting the stored path as a URL. */
+function replayCell(entry, copy) {
+  const cell = document.createElement("td");
+  cell.className = "board-replay";
+  if (!entry.replay || !/^[a-f0-9]{32}$/.test(entry.trackHash ?? "")) {
+    cell.textContent = "—";
+    return cell;
+  }
+  const name = entry.name || "anonymous";
+  const watch = document.createElement("a");
+  watch.textContent = copy.watch;
+  watch.href = `./?replay=${entry.trackHash}`;
+  watch.setAttribute("aria-label", copy.watchAria(name));
+  const download = document.createElement("a");
+  download.textContent = copy.download;
+  download.href = `replays/${entry.trackHash}.json`;
+  download.download = `killfield-replay-${entry.board}-${entry.seed}.json`;
+  download.setAttribute("aria-label", copy.downloadAria(name));
+  cell.append(watch, download);
+  return cell;
 }
 
 function render() {
@@ -215,6 +245,7 @@ function render() {
       }
       row.append(cell);
     });
+    row.append(replayCell(entry, copy));
     body.append(row);
   }
 

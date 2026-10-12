@@ -25,7 +25,7 @@
  */
 
 import * as C from "./src/constants.js";
-import { STRINGS, loadLang, saveLang } from "./src/i18n.js?v=4c338afa";
+import { STRINGS, loadLang, saveLang } from "./src/i18n.js?v=board-replay";
 import { Keyboard, TouchControls } from "./src/input.js?v=d3008c00";
 import {
   DEFAULT_PAD_TUNE,
@@ -1438,6 +1438,24 @@ async function loadReplayFile(file) {
   replayFileInput.value = "";
 }
 
+/** Board rows link here as ?replay=<trackHash>. Only the archive's own 32-hex
+ *  names are fetched, so the query string cannot point the page elsewhere. */
+async function loadBoardReplay(trackHash) {
+  if (!/^[a-f0-9]{32}$/.test(trackHash)) {
+    replayMessage.textContent = t().replayLoadFailed;
+    return;
+  }
+  replayMessage.textContent = t().replayFetching;
+  try {
+    const response = await fetch(`replays/${trackHash}.json`);
+    if (!response.ok) throw new Error(String(response.status));
+    await loadReplayRecord(await response.text());
+  } catch (error) {
+    replayMessage.textContent = t().replayLoadFailed;
+    console.error("Board replay fetch failed", error);
+  }
+}
+
 /** Any new handle is a new match, so it ends whatever ranked session was
  *  running — a reroll, a different opponent and a mode switch all land here. */
 function newGame({ ranked: startRanked = false } = {}) {
@@ -2341,8 +2359,11 @@ async function boot() {
   };
 
   setMode("watch");
+  const boardReplay = new URLSearchParams(location.search).get("replay");
+  if (boardReplay !== null) setMode("replay");
   applyLanguage();
   requestAnimationFrame(frame);
+  if (boardReplay !== null) loadBoardReplay(boardReplay);
 }
 
 boot().catch((err) => {

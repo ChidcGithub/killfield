@@ -171,6 +171,16 @@ if every online submission path fails. The viewer's **Replay** mode accepts the
 same JSON by file picker or drag-and-drop, recreates the match in the engine,
 and provides pause, sound, fullscreen and deterministic frame seeking.
 
+Every accepted record is also archived as
+`viewer/replays/<trackHash>.json`, in the same shape as a downloaded replay,
+and each board row links to it: **Watch** opens the viewer at
+`?replay=<trackHash>`, **Download** saves the JSON. The verifier writes the
+file from an allow-list of fields, with the verified name and counts, in the
+same commit as the board entry. Records from before the archive were restored
+by `tools/backfill_replays.mjs`, which accepts an Issue's track only when it
+fingerprints to the committed `trackHash`; the one hand-verified record
+with no Issue was restored the same way from its downloaded JSON (`--record`).
+
 When the gateway is unreachable, the page exposes **Submit with GitHub**. It
 copies the bare record JSON and opens the repository Issue form; the player
 pastes it into Record and submits. The form adds the ```json fence itself. It

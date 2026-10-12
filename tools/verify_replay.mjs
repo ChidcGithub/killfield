@@ -25,7 +25,9 @@
  */
 
 import fs from "node:fs";
+import path from "node:path";
 import { createHash } from "node:crypto";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   LIMITS, MIN_SUBMITTABLE_WINS, RejectedSubmission,
   encodeSession, sanitiseHandle, sanitiseName, summariseResults, unpackSession,
@@ -45,6 +47,11 @@ const boardFlagIndex = process.argv.indexOf("--board");
 const BOARD_PATH = boardFlagIndex === -1
   ? new URL("leaderboard.json", VIEWER)
   : process.argv[boardFlagIndex + 1];
+// Accepted replays live beside whichever board they belong to, so a test run
+// with --board writes its archive into the same scratch directory.
+const REPLAY_DIR = path.join(
+  path.dirname(BOARD_PATH instanceof URL ? fileURLToPath(BOARD_PATH) : BOARD_PATH), "replays",
+);
 const SUBMISSION_VERSION = 1;
 const BOARDS = { hybrid: "hybrid", laika: "laika", killfield: "killfield" };
 /** Ceiling on entries one account can land in a day, to bound Actions spend. */
@@ -65,7 +72,7 @@ const reject = (why) => { throw new RejectedSubmission(why); };
 
 /** Pull the fenced JSON block out of an issue body. Everything else is prose
  *  for humans and is never interpreted. */
-function extractSubmission(body) {
+export function extractSubmission(body) {
   if (typeof body !== "string" || body.length === 0) reject("the issue body is empty");
   if (body.length > MAX_ISSUE_BODY_CHARS) reject("the issue body is too large to parse");
   const fence = /```json\s*\n([\s\S]*?)\n```/.exec(body);
@@ -94,7 +101,7 @@ function readComments(file) {
   return comments;
 }
 
-function restoreChunkedTrack(submission, comments, gateway, issue) {
+export function restoreChunkedTrack(submission, comments, gateway, issue) {
   if (submission.track !== null) return submission;
   if (gateway?.version !== 2) reject("a chunked track did not come through the v2 gateway");
   if (!isInteger(submission.trackParts, 2, MAX_TRACK_PARTS)
@@ -258,7 +265,7 @@ function submitterKey(author, gatewaySubmitter) {
  * copy the public marker, but they cannot make GitHub attribute their Issue to
  * that account. The Worker computes the key; the replay contains no IP data.
  */
-function gatewaySubmitter(body, author) {
+export function gatewaySubmitter(body, author) {
   const marker = GATEWAY_MARKER.exec(body ?? "");
   if (marker === null) return null;
   const gatewayAuthor = process.env.LEADERBOARD_GATEWAY_AUTHOR ?? "";
@@ -281,6 +288,53 @@ function checkRateLimit(board, key) {
 }
 
 // ----------------------------------------------------------------- verifying
+
+export function trackFingerprint(config, session) {
+  const canonical = encodeSession(session);
+  const identity = Buffer.concat([
+    Buffer.from(JSON.stringify([
+      config.seed, config.opponent, config.delayFrames,
+      Math.round(config.openingDelaySeconds * FPS),
+    ])),
+    Buffer.from(canonical.buffer, canonical.byteOffset, canonical.byteLength),
+  ]);
+  return createHash("sha256").update(identity).digest("hex").slice(0, 32);
+}
+
+export const replayPathFor = (trackHash) => `replays/${trackHash}.json`;
+
+/**
+ * The replay the board links to, in the same shape as the page's own
+ * Download replay file. Built from an allow-list rather than by copying the
+ * submission, so no unverified field a stranger added rides along onto the
+ * site; the name, account and counts are the verified entry's.
+ */
+export function archivedReplay(submission, entry) {
+  const timestamp = (value) => (Number.isFinite(value) ? value : null);
+  return {
+    v: SUBMISSION_VERSION,
+    name: entry.name,
+    github: entry.github,
+    seed: submission.seed,
+    opponent: submission.opponent,
+    delayFrames: submission.delayFrames,
+    openingDelaySeconds: submission.openingDelaySeconds,
+    engine: submission.engine,
+    policy: submission.policy,
+    claim: entry.wins,
+    rounds: entry.rounds,
+    frames: entry.frames,
+    startedAt: timestamp(submission.startedAt),
+    endedAt: timestamp(submission.endedAt),
+    track: submission.track,
+  };
+}
+
+export function writeArchivedReplay(directory, submission, entry) {
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(path.join(directory, `${entry.trackHash}.json`),
+    `${JSON.stringify(archivedReplay(submission, entry))}\n`);
+}
 
 async function verify({ body, author, issue }) {
   const gateway = gatewaySubmitter(body, author);
@@ -311,15 +365,7 @@ async function verify({ body, author, issue }) {
   // base64 strings decode to the identical replay;
   // hashing the raw string would let each of those bypass the duplicate check
   // under a different name.
-  const canonical = encodeSession(session);
-  const identity = Buffer.concat([
-    Buffer.from(JSON.stringify([
-      config.seed, config.opponent, config.delayFrames,
-      Math.round(config.openingDelaySeconds * FPS),
-    ])),
-    Buffer.from(canonical.buffer, canonical.byteOffset, canonical.byteLength),
-  ]);
-  const trackHash = createHash("sha256").update(identity).digest("hex").slice(0, 32);
+  const trackHash = trackFingerprint(config, session);
   checkNotADuplicate(board, trackHash);
 
   const { instance } = await WebAssembly.instantiate(engine.bytes, {});
@@ -344,6 +390,7 @@ async function verify({ body, author, issue }) {
 
   return {
     board,
+    submission,
     entry: {
       name: sanitiseName(submission.name),
       github: declaredHandle(submission.github, author, gateway?.key ?? null),
@@ -364,6 +411,7 @@ async function verify({ body, author, issue }) {
       hybridMovementFrames: hybridMovement.frames,
       issue: issue ?? null,
       trackHash,
+      replay: replayPathFor(trackHash),
       verifiedAt: new Date().toISOString(),
     },
   };
@@ -371,51 +419,58 @@ async function verify({ body, author, issue }) {
 
 // ---------------------------------------------------------------------- main
 
-const fileArgument = process.argv.indexOf("--file");
-const body = fileArgument === -1
-  ? process.env.ISSUE_BODY
-  : fs.readFileSync(process.argv[fileArgument + 1], "utf8");
-const author = process.env.ISSUE_AUTHOR || null;
-const issue = process.env.ISSUE_NUMBER ? Number(process.env.ISSUE_NUMBER) : null;
-const write = process.argv.includes("--write");
+async function main() {
+  const fileArgument = process.argv.indexOf("--file");
+  const body = fileArgument === -1
+    ? process.env.ISSUE_BODY
+    : fs.readFileSync(process.argv[fileArgument + 1], "utf8");
+  const author = process.env.ISSUE_AUTHOR || null;
+  const issue = process.env.ISSUE_NUMBER ? Number(process.env.ISSUE_NUMBER) : null;
+  const write = process.argv.includes("--write");
 
-let verdict;
-try {
-  const { board, entry } = await verify({ body, author, issue });
-  if (write) {
-    board.entries.push(entry);
-    board.entries.sort(compareLeaderboardEntries);
-    board.updated = new Date().toISOString();
-    fs.writeFileSync(BOARD_PATH, `${JSON.stringify(board, null, 2)}\n`);
+  let verdict;
+  try {
+    const { board, entry, submission } = await verify({ body, author, issue });
+    if (write) {
+      writeArchivedReplay(REPLAY_DIR, submission, entry);
+      board.entries.push(entry);
+      board.entries.sort(compareLeaderboardEntries);
+      board.updated = new Date().toISOString();
+      fs.writeFileSync(BOARD_PATH, `${JSON.stringify(board, null, 2)}\n`);
+    }
+    verdict = { ok: true, entry };
+  } catch (error) {
+    if (!(error instanceof RejectedSubmission)) throw error;
+    verdict = { ok: false, reason: error.message };
   }
-  verdict = { ok: true, entry };
-} catch (error) {
-  if (!(error instanceof RejectedSubmission)) throw error;
-  verdict = { ok: false, reason: error.message };
+
+  // The workflow reads these files rather than parsing stdout, so nothing the
+  // submission controls can shape a shell command downstream.
+  fs.writeFileSync("verdict.json", `${JSON.stringify(verdict, null, 2)}\n`);
+
+  /** Rejection reasons quote values the submitter chose. Backticks are the only
+   *  character that could break out of the fence they are shown in. */
+  const fenced = (text) => `\`\`\`\n${text.replaceAll("`", "'")}\n\`\`\`\n`;
+  fs.writeFileSync("comment.md", verdict.ok
+    ? `**Verified.** ${verdict.entry.wins} wins against `
+      + `${{ hybrid: "Hybrid", laika: "Laika", killfield: "Killfield" }[verdict.entry.board]}, replayed over `
+      + `${verdict.entry.rounds} rounds (${verdict.entry.losses} losses, `
+      + `${verdict.entry.doubleKills} double KOs) and ${verdict.entry.frames} frames.\n\n`
+      + `Lane: **${verdict.entry.playerClass === "bot" ? "Bot" : "Human"}** — `
+      + `${(verdict.entry.hybridMovementMatch * 100).toFixed(1)}% Hybrid movement match `
+      + `(Bot is strictly greater than 50%).\n\n`
+      + "It is on the board now. The score above is the replay's, not the one "
+      + "the record claimed.\n"
+    : "**Not verified.** Nothing went on the board.\n\n"
+      + fenced(verdict.reason)
+      + "\nIf you think this is wrong, leave a comment — the record is still here "
+      + "and can be replayed again.\n");
+
+  process.stdout.write(`${verdict.ok ? "accepted" : "rejected"}: `
+    + `${verdict.ok ? `${verdict.entry.wins} wins on ${verdict.entry.board}` : verdict.reason}\n`);
+  process.exitCode = verdict.ok ? 0 : 1;
 }
 
-// The workflow reads these files rather than parsing stdout, so nothing the
-// submission controls can shape a shell command downstream.
-fs.writeFileSync("verdict.json", `${JSON.stringify(verdict, null, 2)}\n`);
-
-/** Rejection reasons quote values the submitter chose. Backticks are the only
- *  character that could break out of the fence they are shown in. */
-const fenced = (text) => `\`\`\`\n${text.replaceAll("`", "'")}\n\`\`\`\n`;
-fs.writeFileSync("comment.md", verdict.ok
-  ? `**Verified.** ${verdict.entry.wins} wins against `
-    + `${{ hybrid: "Hybrid", laika: "Laika", killfield: "Killfield" }[verdict.entry.board]}, replayed over `
-    + `${verdict.entry.rounds} rounds (${verdict.entry.losses} losses, `
-    + `${verdict.entry.doubleKills} double KOs) and ${verdict.entry.frames} frames.\n\n`
-    + `Lane: **${verdict.entry.playerClass === "bot" ? "Bot" : "Human"}** — `
-    + `${(verdict.entry.hybridMovementMatch * 100).toFixed(1)}% Hybrid movement match `
-    + `(Bot is strictly greater than 50%).\n\n`
-    + "It is on the board now. The score above is the replay's, not the one "
-    + "the record claimed.\n"
-  : "**Not verified.** Nothing went on the board.\n\n"
-    + fenced(verdict.reason)
-    + "\nIf you think this is wrong, leave a comment — the record is still here "
-    + "and can be replayed again.\n");
-
-process.stdout.write(`${verdict.ok ? "accepted" : "rejected"}: `
-  + `${verdict.ok ? `${verdict.entry.wins} wins on ${verdict.entry.board}` : verdict.reason}\n`);
-process.exitCode = verdict.ok ? 0 : 1;
+// Imported by tools/backfill_replays.mjs for the shared parsing and
+// fingerprinting; only a direct run verifies an Issue.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

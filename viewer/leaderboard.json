@@ -19,7 +19,8 @@
       "hybridMovementFrames": 27243,
       "issue": 78,
       "trackHash": "af21717fefda1afcb1d9aeeb04cbcb52",
-      "verifiedAt": "2026-10-03T04:53:40.705Z"
+      "verifiedAt": "2026-10-03T04:53:40.705Z",
+      "replay": "replays/af21717fefda1afcb1d9aeeb04cbcb52.json"
     },
     {
       "name": "Trippy",
@@ -39,7 +40,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.20153208313884846,
       "hybridMovementMatches": 7340,
-      "hybridMovementFrames": 36421
+      "hybridMovementFrames": 36421,
+      "replay": "replays/3b74dc693f603abad9cfde48828665c5.json"
     },
     {
       "name": "Human",
@@ -59,7 +61,8 @@
       "hybridMovementFrames": 113520,
       "issue": null,
       "trackHash": "54d9072d4ceb95ca97ae8ee0eb909c09",
-      "verifiedAt": "2026-10-02T19:10:17.897Z"
+      "verifiedAt": "2026-10-02T19:10:17.897Z",
+      "replay": "replays/54d9072d4ceb95ca97ae8ee0eb909c09.json"
     },
     {
       "name": "ghost",
@@ -79,7 +82,8 @@
       "hybridMovementFrames": 120000,
       "issue": 45,
       "trackHash": "46b6287e6746585841d26f71fca9b7bd",
-      "verifiedAt": "2026-09-22T11:18:42.678Z"
+      "verifiedAt": "2026-09-22T11:18:42.678Z",
+      "replay": "replays/46b6287e6746585841d26f71fca9b7bd.json"
     },
     {
       "name": "Wu Zhiyu",
@@ -99,7 +103,8 @@
       "hybridMovementFrames": 25691,
       "issue": 74,
       "trackHash": "3e263b738d37ff4641ec8f786be09642",
-      "verifiedAt": "2026-10-01T07:13:30.493Z"
+      "verifiedAt": "2026-10-01T07:13:30.493Z",
+      "replay": "replays/3e263b738d37ff4641ec8f786be09642.json"
     },
     {
       "name": "Laika's Owner",
@@ -119,7 +124,8 @@
       "hybridMovementFrames": 8881,
       "issue": 58,
       "trackHash": "bb462a5deaa92479bf201367fb097b85",
-      "verifiedAt": "2026-09-25T15:28:28.800Z"
+      "verifiedAt": "2026-09-25T15:28:28.800Z",
+      "replay": "replays/bb462a5deaa92479bf201367fb097b85.json"
     },
     {
       "name": "Alternator",
@@ -139,7 +145,8 @@
       "playerClass": "bot",
       "hybridMovementMatch": 0.9026989619377163,
       "hybridMovementMatches": 6522,
-      "hybridMovementFrames": 7225
+      "hybridMovementFrames": 7225,
+      "replay": "replays/fad27a5ae3eb23dc70d86f9902ba4bf8.json"
     },
     {
       "name": "Human",
@@ -159,7 +166,8 @@
       "hybridMovementFrames": 81675,
       "issue": 60,
       "trackHash": "c12e35f320aa5ed913ad1a88f0d23cd6",
-      "verifiedAt": "2026-09-25T18:26:15.138Z"
+      "verifiedAt": "2026-09-25T18:26:15.138Z",
+      "replay": "replays/c12e35f320aa5ed913ad1a88f0d23cd6.json"
     },
     {
       "name": "Human",
@@ -179,7 +187,8 @@
       "hybridMovementFrames": 63512,
       "issue": 54,
       "trackHash": "75c8bea11c4046e098be8df60f9cfdf6",
-      "verifiedAt": "2026-09-24T17:55:07.573Z"
+      "verifiedAt": "2026-09-24T17:55:07.573Z",
+      "replay": "replays/75c8bea11c4046e098be8df60f9cfdf6.json"
     },
     {
       "name": "Kobi💯",
@@ -199,7 +208,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.24350828729281768,
       "hybridMovementMatches": 1763,
-      "hybridMovementFrames": 7240
+      "hybridMovementFrames": 7240,
+      "replay": "replays/d0d8142232b8f1b4b321f46f18cc7ab3.json"
     },
     {
       "name": "Kobi💯",
@@ -219,7 +229,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2042833607907743,
       "hybridMovementMatches": 1364,
-      "hybridMovementFrames": 6677
+      "hybridMovementFrames": 6677,
+      "replay": "replays/0f6815d57954e8a7a6361039dae93387.json"
     },
     {
       "name": "Human",
@@ -239,7 +250,8 @@
       "hybridMovementFrames": 51572,
       "issue": 66,
       "trackHash": "1273bb53e91431838f784bdce8b563f9",
-      "verifiedAt": "2026-09-29T15:21:27.191Z"
+      "verifiedAt": "2026-09-29T15:21:27.191Z",
+      "replay": "replays/1273bb53e91431838f784bdce8b563f9.json"
     },
     {
       "name": "Human",
@@ -259,7 +271,8 @@
       "hybridMovementFrames": 64674,
       "issue": 65,
       "trackHash": "4bb0525d8f6ee55f617d2746ec19348a",
-      "verifiedAt": "2026-09-29T14:42:32.130Z"
+      "verifiedAt": "2026-09-29T14:42:32.130Z",
+      "replay": "replays/4bb0525d8f6ee55f617d2746ec19348a.json"
     },
     {
       "name": "Trippy",
@@ -279,7 +292,8 @@
       "hybridMovementFrames": 95549,
       "issue": 41,
       "trackHash": "6a4b1b8d8720eed0f303e13ce3560765",
-      "verifiedAt": "2026-09-21T23:36:10.554Z"
+      "verifiedAt": "2026-09-21T23:36:10.554Z",
+      "replay": "replays/6a4b1b8d8720eed0f303e13ce3560765.json"
     },
     {
       "name": "Rapid",
@@ -299,7 +313,8 @@
       "hybridMovementFrames": 19381,
       "issue": 62,
       "trackHash": "23877d512a16fd8fa9bbb1900ac86a7a",
-      "verifiedAt": "2026-09-27T16:45:39.217Z"
+      "verifiedAt": "2026-09-27T16:45:39.217Z",
+      "replay": "replays/23877d512a16fd8fa9bbb1900ac86a7a.json"
     },
     {
       "name": "pryo-lowkey trolling ngl",
@@ -319,7 +334,8 @@
       "hybridMovementFrames": 16896,
       "issue": 83,
       "trackHash": "7192c74169e365d72052439ca60e18b8",
-      "verifiedAt": "2026-10-04T22:49:46.679Z"
+      "verifiedAt": "2026-10-04T22:49:46.679Z",
+      "replay": "replays/7192c74169e365d72052439ca60e18b8.json"
     },
     {
       "name": "Lichen (won a 1v1 😛)",
@@ -339,7 +355,8 @@
       "hybridMovementFrames": 20434,
       "issue": 53,
       "trackHash": "850cab2b3e711a081c19960a9c385e7d",
-      "verifiedAt": "2026-09-23T22:42:25.166Z"
+      "verifiedAt": "2026-09-23T22:42:25.166Z",
+      "replay": "replays/850cab2b3e711a081c19960a9c385e7d.json"
     },
     {
       "name": "layer_name",
@@ -359,7 +376,8 @@
       "hybridMovementFrames": 91832,
       "issue": 89,
       "trackHash": "c5471d5cf131ad2bbc5317bd96902c61",
-      "verifiedAt": "2026-10-08T13:28:46.536Z"
+      "verifiedAt": "2026-10-08T13:28:46.536Z",
+      "replay": "replays/c5471d5cf131ad2bbc5317bd96902c61.json"
     },
     {
       "name": "ayer_name",
@@ -379,7 +397,8 @@
       "hybridMovementFrames": 100086,
       "issue": 90,
       "trackHash": "667920086844fbab68a0c3088bc90dbc",
-      "verifiedAt": "2026-10-09T15:38:01.042Z"
+      "verifiedAt": "2026-10-09T15:38:01.042Z",
+      "replay": "replays/667920086844fbab68a0c3088bc90dbc.json"
     },
     {
       "name": "First 1v1 win (Lichen)",
@@ -399,7 +418,8 @@
       "hybridMovementFrames": 15548,
       "issue": 94,
       "trackHash": "77c65fd51ac09f9e242e20e93d5bfa8a",
-      "verifiedAt": "2026-10-11T21:39:05.322Z"
+      "verifiedAt": "2026-10-11T21:39:05.322Z",
+      "replay": "replays/77c65fd51ac09f9e242e20e93d5bfa8a.json"
     },
     {
       "name": "interstellar",
@@ -419,7 +439,8 @@
       "playerClass": "bot",
       "hybridMovementMatch": 0.8099468615078047,
       "hybridMovementMatches": 9755,
-      "hybridMovementFrames": 12044
+      "hybridMovementFrames": 12044,
+      "replay": "replays/decdf1cf2fa12991c6a6ae049746712c.json"
     },
     {
       "name": "Human will beat Hybrid",
@@ -439,7 +460,8 @@
       "hybridMovementFrames": 16962,
       "issue": 92,
       "trackHash": "2a84e058042c1070f516a36d478c89ba",
-      "verifiedAt": "2026-10-10T18:27:53.374Z"
+      "verifiedAt": "2026-10-10T18:27:53.374Z",
+      "replay": "replays/2a84e058042c1070f516a36d478c89ba.json"
     },
     {
       "name": "plexx",
@@ -459,7 +481,8 @@
       "hybridMovementFrames": 12576,
       "issue": 49,
       "trackHash": "cc5ed8cd6612685ccb8b16b2a3916435",
-      "verifiedAt": "2026-09-22T23:53:17.314Z"
+      "verifiedAt": "2026-09-22T23:53:17.314Z",
+      "replay": "replays/cc5ed8cd6612685ccb8b16b2a3916435.json"
     },
     {
       "name": "Lichen (I'm gonna win)",
@@ -479,7 +502,8 @@
       "hybridMovementFrames": 24816,
       "issue": 93,
       "trackHash": "ddafc26683dd7a38ab32e51c209706d3",
-      "verifiedAt": "2026-10-11T21:21:39.263Z"
+      "verifiedAt": "2026-10-11T21:21:39.263Z",
+      "replay": "replays/ddafc26683dd7a38ab32e51c209706d3.json"
     },
     {
       "name": "Rapid",
@@ -499,7 +523,8 @@
       "hybridMovementFrames": 14484,
       "issue": 57,
       "trackHash": "bb700c17b552b1203f0562c416c82a15",
-      "verifiedAt": "2026-09-25T12:37:18.576Z"
+      "verifiedAt": "2026-09-25T12:37:18.576Z",
+      "replay": "replays/bb700c17b552b1203f0562c416c82a15.json"
     },
     {
       "name": "Brainrot",
@@ -519,7 +544,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2053634824403299,
       "hybridMovementMatches": 3760,
-      "hybridMovementFrames": 18309
+      "hybridMovementFrames": 18309,
+      "replay": "replays/4e0afd55d54acd2db8422613c99d4a87.json"
     },
     {
       "name": "small-li",
@@ -539,7 +565,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.18893866831453732,
       "hybridMovementMatches": 1223,
-      "hybridMovementFrames": 6473
+      "hybridMovementFrames": 6473,
+      "replay": "replays/bc4c300a621ebeebc3f8d04785be52c5.json"
     },
     {
       "name": "player_name",
@@ -559,7 +586,8 @@
       "hybridMovementFrames": 85894,
       "issue": 86,
       "trackHash": "9a48cd08b0f255abbbef4a9a3a83b3c1",
-      "verifiedAt": "2026-10-07T23:54:57.674Z"
+      "verifiedAt": "2026-10-07T23:54:57.674Z",
+      "replay": "replays/9a48cd08b0f255abbbef4a9a3a83b3c1.json"
     },
     {
       "name": "Lichen (Doggy Bag :P)",
@@ -579,7 +607,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.21071953010279001,
       "hybridMovementMatches": 861,
-      "hybridMovementFrames": 4086
+      "hybridMovementFrames": 4086,
+      "replay": "replays/94fa0c19a6405647f2f69def2de03e17.json"
     },
     {
       "name": "KD419",
@@ -599,7 +628,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.20301697045883094,
       "hybridMovementMatches": 646,
-      "hybridMovementFrames": 3182
+      "hybridMovementFrames": 3182,
+      "replay": "replays/bd73605ae7313b65f3c12ba0e1c0d9ca.json"
     },
     {
       "name": "Human",
@@ -619,7 +649,8 @@
       "hybridMovementFrames": 18076,
       "issue": 91,
       "trackHash": "1cbe7bd0cefdf529aee3d1ad60811f0e",
-      "verifiedAt": "2026-10-10T17:00:54.104Z"
+      "verifiedAt": "2026-10-10T17:00:54.104Z",
+      "replay": "replays/1cbe7bd0cefdf529aee3d1ad60811f0e.json"
     },
     {
       "name": "kaag's 10 achieved",
@@ -639,7 +670,8 @@
       "hybridMovementFrames": 13843,
       "issue": 67,
       "trackHash": "37f41eb741b9f973240b4c46beb88f85",
-      "verifiedAt": "2026-09-30T05:09:50.183Z"
+      "verifiedAt": "2026-09-30T05:09:50.183Z",
+      "replay": "replays/37f41eb741b9f973240b4c46beb88f85.json"
     },
     {
       "name": "Corderox1",
@@ -659,7 +691,8 @@
       "hybridMovementFrames": 41950,
       "issue": 48,
       "trackHash": "e8db811534b22be994e808fd5a5c92bc",
-      "verifiedAt": "2026-09-22T18:05:16.901Z"
+      "verifiedAt": "2026-09-22T18:05:16.901Z",
+      "replay": "replays/e8db811534b22be994e808fd5a5c92bc.json"
     },
     {
       "name": "KD419",
@@ -679,7 +712,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.17405541561712845,
       "hybridMovementMatches": 691,
-      "hybridMovementFrames": 3970
+      "hybridMovementFrames": 3970,
+      "replay": "replays/96a7fae73b39148d4ab4e7070bd05b46.json"
     },
     {
       "name": "ghost",
@@ -699,7 +733,8 @@
       "hybridMovementFrames": 12116,
       "issue": 40,
       "trackHash": "700566565bf0a5414d239c06521cedeb",
-      "verifiedAt": "2026-09-21T20:10:27.493Z"
+      "verifiedAt": "2026-09-21T20:10:27.493Z",
+      "replay": "replays/700566565bf0a5414d239c06521cedeb.json"
     },
     {
       "name": "kaag's sub 10 ig",
@@ -719,7 +754,8 @@
       "hybridMovementFrames": 9609,
       "issue": 63,
       "trackHash": "ec5fff84ed0fa26b7806a08b5141293f",
-      "verifiedAt": "2026-09-29T08:05:28.267Z"
+      "verifiedAt": "2026-09-29T08:05:28.267Z",
+      "replay": "replays/ec5fff84ed0fa26b7806a08b5141293f.json"
     },
     {
       "name": "bruh",
@@ -739,7 +775,8 @@
       "hybridMovementFrames": 9989,
       "issue": 69,
       "trackHash": "c6051e13a9ac60b099cee3c1e7fbb3a3",
-      "verifiedAt": "2026-09-30T15:16:09.361Z"
+      "verifiedAt": "2026-09-30T15:16:09.361Z",
+      "replay": "replays/c6051e13a9ac60b099cee3c1e7fbb3a3.json"
     },
     {
       "name": "Human",
@@ -759,7 +796,8 @@
       "hybridMovementFrames": 23578,
       "issue": 85,
       "trackHash": "1f3f37b0b976ff72125ffe15e9c66116",
-      "verifiedAt": "2026-10-07T07:27:42.465Z"
+      "verifiedAt": "2026-10-07T07:27:42.465Z",
+      "replay": "replays/1f3f37b0b976ff72125ffe15e9c66116.json"
     },
     {
       "name": "Lichen (dang not bad)",
@@ -779,7 +817,8 @@
       "hybridMovementFrames": 15371,
       "issue": 88,
       "trackHash": "20798e5fbbaf9bd8123421433c7142c9",
-      "verifiedAt": "2026-10-08T11:43:08.225Z"
+      "verifiedAt": "2026-10-08T11:43:08.225Z",
+      "replay": "replays/20798e5fbbaf9bd8123421433c7142c9.json"
     },
     {
       "name": "kaag's number",
@@ -799,7 +838,8 @@
       "hybridMovementFrames": 9128,
       "issue": 64,
       "trackHash": "4d2ba7106f223c9cc6773891ff330942",
-      "verifiedAt": "2026-09-29T12:57:00.475Z"
+      "verifiedAt": "2026-09-29T12:57:00.475Z",
+      "replay": "replays/4d2ba7106f223c9cc6773891ff330942.json"
     },
     {
       "name": "pyroghost htf dy kl hybr",
@@ -819,7 +859,8 @@
       "hybridMovementFrames": 10120,
       "issue": 76,
       "trackHash": "b46ffbd6c4ce6a3e816061e423955c98",
-      "verifiedAt": "2026-10-01T21:17:55.434Z"
+      "verifiedAt": "2026-10-01T21:17:55.434Z",
+      "replay": "replays/b46ffbd6c4ce6a3e816061e423955c98.json"
     },
     {
       "name": "Corderox1",
@@ -839,7 +880,8 @@
       "hybridMovementFrames": 36045,
       "issue": 46,
       "trackHash": "6fc249da8a3eefa5eb0b3a6587dcff26",
-      "verifiedAt": "2026-09-22T15:54:39.049Z"
+      "verifiedAt": "2026-09-22T15:54:39.049Z",
+      "replay": "replays/6fc249da8a3eefa5eb0b3a6587dcff26.json"
     },
     {
       "name": "Alternator",
@@ -859,7 +901,8 @@
       "playerClass": "bot",
       "hybridMovementMatch": 0.8675181090354556,
       "hybridMovementMatches": 4551,
-      "hybridMovementFrames": 5246
+      "hybridMovementFrames": 5246,
+      "replay": "replays/f381e9a1e8997c3926299f71a7b4f0f6.json"
     },
     {
       "name": "kaag's 2nd (bruh)",
@@ -879,7 +922,8 @@
       "hybridMovementFrames": 16901,
       "issue": 42,
       "trackHash": "2090a2d7672582281508d8a37dd5c672",
-      "verifiedAt": "2026-09-21T23:58:53.204Z"
+      "verifiedAt": "2026-09-21T23:58:53.204Z",
+      "replay": "replays/2090a2d7672582281508d8a37dd5c672.json"
     },
     {
       "name": "small-li",
@@ -899,7 +943,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.21800947867298578,
       "hybridMovementMatches": 506,
-      "hybridMovementFrames": 2321
+      "hybridMovementFrames": 2321,
+      "replay": "replays/4cc5b291ad4acb63e00bbdf1fd2f0f2f.json"
     },
     {
       "name": "Kobi💯 second attempt",
@@ -919,7 +964,8 @@
       "hybridMovementFrames": 8867,
       "issue": 70,
       "trackHash": "af76ca20c2123f74ea0cad6cce2a94b1",
-      "verifiedAt": "2026-10-01T01:11:39.083Z"
+      "verifiedAt": "2026-10-01T01:11:39.083Z",
+      "replay": "replays/af76ca20c2123f74ea0cad6cce2a94b1.json"
     },
     {
       "name": "Trippy",
@@ -939,7 +985,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.13683041909519844,
       "hybridMovementMatches": 1479,
-      "hybridMovementFrames": 10809
+      "hybridMovementFrames": 10809,
+      "replay": "replays/db79d3a6aa4721a6a698fe78f24c16d0.json"
     },
     {
       "name": "unknown",
@@ -959,7 +1006,8 @@
       "hybridMovementFrames": 9160,
       "issue": 95,
       "trackHash": "8aa810ab22ce6bcb4c4132a790ea914a",
-      "verifiedAt": "2026-10-11T22:22:20.640Z"
+      "verifiedAt": "2026-10-11T22:22:20.640Z",
+      "replay": "replays/8aa810ab22ce6bcb4c4132a790ea914a.json"
     },
     {
       "name": "ghost",
@@ -979,7 +1027,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.13905830690412296,
       "hybridMovementMatches": 2850,
-      "hybridMovementFrames": 20495
+      "hybridMovementFrames": 20495,
+      "replay": "replays/348542f6f81d81aedd509b3eecd9f2fb.json"
     },
     {
       "name": "Trippy",
@@ -999,7 +1048,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2374326750448833,
       "hybridMovementMatches": 529,
-      "hybridMovementFrames": 2228
+      "hybridMovementFrames": 2228,
+      "replay": "replays/0452a3aaa70fcaa2f693d22e4e5bc0e6.json"
     },
     {
       "name": "KD419",
@@ -1019,7 +1069,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.22085492227979275,
       "hybridMovementMatches": 341,
-      "hybridMovementFrames": 1544
+      "hybridMovementFrames": 1544,
+      "replay": "replays/3c29bdaa84d7da6b8c26ecbb37c4c805.json"
     },
     {
       "name": "Corderox1 (5-15)",
@@ -1039,7 +1090,8 @@
       "hybridMovementFrames": 17513,
       "issue": 47,
       "trackHash": "0457a86bb10b2d219cfc6d4c0bf390e6",
-      "verifiedAt": "2026-09-22T16:14:30.190Z"
+      "verifiedAt": "2026-09-22T16:14:30.190Z",
+      "replay": "replays/0457a86bb10b2d219cfc6d4c0bf390e6.json"
     },
     {
       "name": "kaag's first run",
@@ -1059,7 +1111,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.12974969843184558,
       "hybridMovementMatches": 1721,
-      "hybridMovementFrames": 13264
+      "hybridMovementFrames": 13264,
+      "replay": "replays/6f6ca14f291dcfad40eacc10b58606a0.json"
     },
     {
       "name": "w0n",
@@ -1079,7 +1132,8 @@
       "hybridMovementFrames": 9697,
       "issue": 61,
       "trackHash": "1fa3cd7a8366fa24c0de73768f0fead4",
-      "verifiedAt": "2026-09-26T15:15:09.712Z"
+      "verifiedAt": "2026-09-26T15:15:09.712Z",
+      "replay": "replays/1fa3cd7a8366fa24c0de73768f0fead4.json"
     },
     {
       "name": "Invader",
@@ -1099,7 +1153,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.08528465624298646,
       "hybridMovementMatches": 1140,
-      "hybridMovementFrames": 13367
+      "hybridMovementFrames": 13367,
+      "replay": "replays/0cfbd200d1f08bd7e235d7e263f400e2.json"
     },
     {
       "name": "Kobi💯 first attempt",
@@ -1119,7 +1174,8 @@
       "hybridMovementFrames": 17067,
       "issue": 43,
       "trackHash": "69ed41b12fcb2f3ac9c1c22bd0d53d13",
-      "verifiedAt": "2026-09-22T00:21:04.483Z"
+      "verifiedAt": "2026-09-22T00:21:04.483Z",
+      "replay": "replays/69ed41b12fcb2f3ac9c1c22bd0d53d13.json"
     },
     {
       "name": "1",
@@ -1139,7 +1195,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.0627062706270627,
       "hybridMovementMatches": 2470,
-      "hybridMovementFrames": 39390
+      "hybridMovementFrames": 39390,
+      "replay": "replays/ea06b4f50f2c1fbd821837dfc42b854d.json"
     },
     {
       "name": "yourdesutrction",
@@ -1159,7 +1216,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.14710252600297177,
       "hybridMovementMatches": 396,
-      "hybridMovementFrames": 2692
+      "hybridMovementFrames": 2692,
+      "replay": "replays/e8e7c3d1ee6224a963fe41cd50d5904e.json"
     },
     {
       "name": "Trippy",
@@ -1179,7 +1237,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.10934964423917114,
       "hybridMovementMatches": 876,
-      "hybridMovementFrames": 8011
+      "hybridMovementFrames": 8011,
+      "replay": "replays/3ab6ec9d88a201a3267cac65390517b6.json"
     },
     {
       "name": "rekursion",
@@ -1199,7 +1258,8 @@
       "playerClass": "bot",
       "hybridMovementMatch": 1,
       "hybridMovementMatches": 1464,
-      "hybridMovementFrames": 1464
+      "hybridMovementFrames": 1464,
+      "replay": "replays/3616280ff93947d15f6d2e5c4e039e83.json"
     },
     {
       "name": "rekursion",
@@ -1219,7 +1279,8 @@
       "playerClass": "bot",
       "hybridMovementMatch": 1,
       "hybridMovementMatches": 1054,
-      "hybridMovementFrames": 1054
+      "hybridMovementFrames": 1054,
+      "replay": "replays/dc12457cef09d3f08d7e44ccbbcd1b5d.json"
     },
     {
       "name": "Rapid",
@@ -1239,7 +1300,8 @@
       "hybridMovementFrames": 4875,
       "issue": 52,
       "trackHash": "0f12282238bbe7c378484302d532e14d",
-      "verifiedAt": "2026-09-23T18:11:33.362Z"
+      "verifiedAt": "2026-09-23T18:11:33.362Z",
+      "replay": "replays/0f12282238bbe7c378484302d532e14d.json"
     },
     {
       "name": "King of Thunder",
@@ -1259,7 +1321,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.11547619047619048,
       "hybridMovementMatches": 97,
-      "hybridMovementFrames": 840
+      "hybridMovementFrames": 840,
+      "replay": "replays/e62cf5e9fafb4447090162c82e975712.json"
     },
     {
       "name": "onlywyjy",
@@ -1279,7 +1342,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2012847965738758,
       "hybridMovementMatches": 188,
-      "hybridMovementFrames": 934
+      "hybridMovementFrames": 934,
+      "replay": "replays/16cd012fc687428e7393881a5ad4dad3.json"
     },
     {
       "name": "yourdesutrction",
@@ -1299,7 +1363,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.11713147410358565,
       "hybridMovementMatches": 147,
-      "hybridMovementFrames": 1255
+      "hybridMovementFrames": 1255,
+      "replay": "replays/2e67ae851f096e0dcdb09c89bba7c4d6.json"
     },
     {
       "name": "yourdesutrction",
@@ -1319,7 +1384,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.139440616132955,
       "hybridMovementMatches": 344,
-      "hybridMovementFrames": 2467
+      "hybridMovementFrames": 2467,
+      "replay": "replays/7ff09823af8a35d72d1c463856c4c299.json"
     },
     {
       "name": "Rapid",
@@ -1339,7 +1405,8 @@
       "hybridMovementFrames": 2998,
       "issue": 50,
       "trackHash": "8d6d1b866b8a9b9644ff9deb2181eaa3",
-      "verifiedAt": "2026-09-23T18:03:35.302Z"
+      "verifiedAt": "2026-09-23T18:03:35.302Z",
+      "replay": "replays/8d6d1b866b8a9b9644ff9deb2181eaa3.json"
     },
     {
       "name": "Rekursion",
@@ -1359,7 +1426,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.15803452855245684,
       "hybridMovementMatches": 357,
-      "hybridMovementFrames": 2259
+      "hybridMovementFrames": 2259,
+      "replay": "replays/af2d334c1322fa3f628752e40b77c427.json"
     },
     {
       "name": "neko_msw",
@@ -1379,7 +1447,8 @@
       "hybridMovementFrames": 3355,
       "issue": 79,
       "trackHash": "1624aceabb8996968b4b6392516c2889",
-      "verifiedAt": "2026-10-03T12:55:53.902Z"
+      "verifiedAt": "2026-10-03T12:55:53.902Z",
+      "replay": "replays/1624aceabb8996968b4b6392516c2889.json"
     },
     {
       "name": "test",
@@ -1399,7 +1468,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.11799350121852152,
       "hybridMovementMatches": 1162,
-      "hybridMovementFrames": 9848
+      "hybridMovementFrames": 9848,
+      "replay": "replays/75a35862de4b657be9ea70e41001e688.json"
     },
     {
       "name": "Rapid",
@@ -1419,7 +1489,8 @@
       "hybridMovementFrames": 6703,
       "issue": 59,
       "trackHash": "a7d9eb2c105ef2b26a146facf308f926",
-      "verifiedAt": "2026-09-25T15:32:53.036Z"
+      "verifiedAt": "2026-09-25T15:32:53.036Z",
+      "replay": "replays/a7d9eb2c105ef2b26a146facf308f926.json"
     },
     {
       "name": "Lichen",
@@ -1439,7 +1510,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2068345323741007,
       "hybridMovementMatches": 115,
-      "hybridMovementFrames": 556
+      "hybridMovementFrames": 556,
+      "replay": "replays/603bcf2dc68ed10c5d2a3870f1953878.json"
     },
     {
       "name": "Lichen (Killfield is OP)",
@@ -1459,7 +1531,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2752688172043011,
       "hybridMovementMatches": 128,
-      "hybridMovementFrames": 465
+      "hybridMovementFrames": 465,
+      "replay": "replays/0faa70d1483401489eb3df0982814b25.json"
     },
     {
       "name": "small-li",
@@ -1479,7 +1552,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.29118773946360155,
       "hybridMovementMatches": 76,
-      "hybridMovementFrames": 261
+      "hybridMovementFrames": 261,
+      "replay": "replays/7939eaee3d68225a6242c0be261c8149.json"
     },
     {
       "name": "KD419",
@@ -1499,7 +1573,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.12962962962962962,
       "hybridMovementMatches": 35,
-      "hybridMovementFrames": 270
+      "hybridMovementFrames": 270,
+      "replay": "replays/c4da74b79c23c4f2133a31284f673b45.json"
     },
     {
       "name": "KD419",
@@ -1519,7 +1594,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.20958083832335328,
       "hybridMovementMatches": 70,
-      "hybridMovementFrames": 334
+      "hybridMovementFrames": 334,
+      "replay": "replays/75a1adee0bb5bc3907faace518495d16.json"
     },
     {
       "name": "jagunjagun",
@@ -1539,7 +1615,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.2618757612667479,
       "hybridMovementMatches": 215,
-      "hybridMovementFrames": 821
+      "hybridMovementFrames": 821,
+      "replay": "replays/7926bb265647325ca5508cd364cfa061.json"
     },
     {
       "name": "neko_msw",
@@ -1559,7 +1636,8 @@
       "hybridMovementFrames": 1095,
       "issue": 81,
       "trackHash": "1501594ef2ef1323d750f3114983d871",
-      "verifiedAt": "2026-10-03T13:05:22.322Z"
+      "verifiedAt": "2026-10-03T13:05:22.322Z",
+      "replay": "replays/1501594ef2ef1323d750f3114983d871.json"
     },
     {
       "name": "POPOQ",
@@ -1579,7 +1657,8 @@
       "hybridMovementFrames": 112,
       "issue": 82,
       "trackHash": "f6aeba5a89a7b3b7535df553c37f9ea5",
-      "verifiedAt": "2026-10-03T13:38:14.918Z"
+      "verifiedAt": "2026-10-03T13:38:14.918Z",
+      "replay": "replays/f6aeba5a89a7b3b7535df553c37f9ea5.json"
     },
     {
       "name": "Rekursion",
@@ -1599,7 +1678,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.13666666666666666,
       "hybridMovementMatches": 123,
-      "hybridMovementFrames": 900
+      "hybridMovementFrames": 900,
+      "replay": "replays/35eb6ba8198a4402ba2aa04021dd311b.json"
     },
     {
       "name": "neko_msw",
@@ -1619,7 +1699,8 @@
       "hybridMovementFrames": 2379,
       "issue": 80,
       "trackHash": "aba8f0960d95fed1a1e44c8768af0834",
-      "verifiedAt": "2026-10-03T12:59:02.717Z"
+      "verifiedAt": "2026-10-03T12:59:02.717Z",
+      "replay": "replays/aba8f0960d95fed1a1e44c8768af0834.json"
     },
     {
       "name": "1",
@@ -1639,7 +1720,8 @@
       "playerClass": "human",
       "hybridMovementMatch": 0.07213930348258707,
       "hybridMovementMatches": 87,
-      "hybridMovementFrames": 1206
+      "hybridMovementFrames": 1206,
+      "replay": "replays/05e9184682d7f69028a832ac57c45a6a.json"
     },
     {
       "name": "Rapid",
@@ -1659,7 +1741,8 @@
       "hybridMovementFrames": 3485,
       "issue": 51,
       "trackHash": "743dbf85af937691d769e3ad9e5108c0",
-      "verifiedAt": "2026-09-23T18:07:07.110Z"
+      "verifiedAt": "2026-09-23T18:07:07.110Z",
+      "replay": "replays/743dbf85af937691d769e3ad9e5108c0.json"
     },
     {
       "name": "Rapid",
@@ -1679,7 +1762,8 @@
       "hybridMovementFrames": 3152,
       "issue": 56,
       "trackHash": "75608a9094443dd1504e52911b78838e",
-      "verifiedAt": "2026-09-24T18:01:58.717Z"
+      "verifiedAt": "2026-09-24T18:01:58.717Z",
+      "replay": "replays/75608a9094443dd1504e52911b78838e.json"
     },
     {
       "name": "chimaboy",
@@ -1699,7 +1783,8 @@
       "hybridMovementFrames": 4249,
       "issue": 68,
       "trackHash": "6b2c06e0060d1f71f96c4cfcbb56639b",
-      "verifiedAt": "2026-09-30T11:32:48.834Z"
+      "verifiedAt": "2026-09-30T11:32:48.834Z",
+      "replay": "replays/6b2c06e0060d1f71f96c4cfcbb56639b.json"
     },
     {
       "name": "zengwenxi",
@@ -1719,7 +1804,8 @@
       "hybridMovementFrames": 3658,
       "issue": 84,
       "trackHash": "fa54a827d1a8eb733a4940551e6f5843",
-      "verifiedAt": "2026-10-05T07:19:42.632Z"
+      "verifiedAt": "2026-10-05T07:19:42.632Z",
+      "replay": "replays/fa54a827d1a8eb733a4940551e6f5843.json"
     },
     {
       "name": "damn",
@@ -1739,7 +1825,8 @@
       "hybridMovementFrames": 9893,
       "issue": 44,
       "trackHash": "18cd73f49a85af448502fe78fbf339d9",
-      "verifiedAt": "2026-09-22T02:36:56.601Z"
+      "verifiedAt": "2026-09-22T02:36:56.601Z",
+      "replay": "replays/18cd73f49a85af448502fe78fbf339d9.json"
     },
     {
       "name": "pyroghost",
@@ -1759,7 +1846,8 @@
       "hybridMovementFrames": 11653,
       "issue": 75,
       "trackHash": "7f1c018247c4e7065663e52ce5dfa821",
-      "verifiedAt": "2026-10-01T20:55:05.724Z"
+      "verifiedAt": "2026-10-01T20:55:05.724Z",
+      "replay": "replays/7f1c018247c4e7065663e52ce5dfa821.json"
     },
     {
       "name": "Wu Zhiyu",
@@ -1779,7 +1867,8 @@
       "hybridMovementFrames": 13388,
       "issue": 71,
       "trackHash": "3cdde10985c2f9b15b3fd61dd90e3d09",
-      "verifiedAt": "2026-10-01T06:46:17.786Z"
+      "verifiedAt": "2026-10-01T06:46:17.786Z",
+      "replay": "replays/3cdde10985c2f9b15b3fd61dd90e3d09.json"
     }
   ]
 }

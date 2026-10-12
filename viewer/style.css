@@ -651,7 +651,7 @@ header { gap: 4px; }
 
 .board-table {
   width: 100%;
-  min-width: 700px;
+  min-width: 800px;
   border-collapse: collapse;
   font-variant-numeric: tabular-nums;
 }
@@ -705,6 +705,22 @@ header { gap: 4px; }
 }
 
 .board-handle:hover { color: var(--accent); }
+
+.board-table td.board-replay { white-space: nowrap; }
+
+.board-replay a {
+  display: inline-block;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.board-replay a + a { margin-left: 5px; color: var(--muted); }
+.board-replay a:hover { border-color: var(--accent); color: var(--accent); }
 
 .board-empty {
   margin: 0;
