@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-12T12:09:09.291Z",
+  "updated": "2026-10-12T13:27:50.982Z",
   "entries": [
     {
       "name": "Human",
@@ -399,6 +399,27 @@
       "trackHash": "667920086844fbab68a0c3088bc90dbc",
       "verifiedAt": "2026-10-09T15:38:01.042Z",
       "replay": "replays/667920086844fbab68a0c3088bc90dbc.json"
+    },
+    {
+      "name": "HYBRID SMOKED (Lichen)",
+      "github": null,
+      "submitter": "784009818f162bf3",
+      "board": "hybrid",
+      "score": 15,
+      "wins": 15,
+      "losses": 4,
+      "doubleKills": 1,
+      "rounds": 20,
+      "seed": 4028621976,
+      "frames": 14127,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.11672683513838748,
+      "hybridMovementMatches": 1649,
+      "hybridMovementFrames": 14127,
+      "issue": 97,
+      "trackHash": "99e523b080c53f535b236d1ce0577565",
+      "replay": "replays/99e523b080c53f535b236d1ce0577565.json",
+      "verifiedAt": "2026-10-12T13:27:50.981Z"
     },
     {
       "name": "First 1v1 win (Lichen)",
