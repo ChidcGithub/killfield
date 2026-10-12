@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-11T22:22:20.641Z",
+  "updated": "2026-10-12T12:09:09.291Z",
   "entries": [
     {
       "name": "Human",
@@ -420,6 +420,27 @@
       "trackHash": "77c65fd51ac09f9e242e20e93d5bfa8a",
       "verifiedAt": "2026-10-11T21:39:05.322Z",
       "replay": "replays/77c65fd51ac09f9e242e20e93d5bfa8a.json"
+    },
+    {
+      "name": "sold (Lichen)",
+      "github": null,
+      "submitter": "784009818f162bf3",
+      "board": "hybrid",
+      "score": 15,
+      "wins": 15,
+      "losses": 12,
+      "doubleKills": 1,
+      "rounds": 28,
+      "seed": 967485903,
+      "frames": 20897,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.09068287313968512,
+      "hybridMovementMatches": 1895,
+      "hybridMovementFrames": 20897,
+      "issue": 96,
+      "trackHash": "8b05ab761f7e2cc40ae4a02602ff705a",
+      "replay": "replays/8b05ab761f7e2cc40ae4a02602ff705a.json",
+      "verifiedAt": "2026-10-12T12:09:09.290Z"
     },
     {
       "name": "interstellar",
