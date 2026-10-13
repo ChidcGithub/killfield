@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-12T13:27:50.982Z",
+  "updated": "2026-10-13T22:24:58.521Z",
   "entries": [
     {
       "name": "Human",
@@ -1197,6 +1197,27 @@
       "hybridMovementMatches": 1140,
       "hybridMovementFrames": 13367,
       "replay": "replays/0cfbd200d1f08bd7e235d7e263f400e2.json"
+    },
+    {
+      "name": "unknown",
+      "github": null,
+      "submitter": "011f8fbdd2305ed0",
+      "board": "hybrid",
+      "score": 5,
+      "wins": 5,
+      "losses": 14,
+      "doubleKills": 5,
+      "rounds": 24,
+      "seed": 857497979,
+      "frames": 9860,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.18113590263691684,
+      "hybridMovementMatches": 1786,
+      "hybridMovementFrames": 9860,
+      "issue": 98,
+      "trackHash": "e988ae6c9fbc347d76ed07477480f684",
+      "replay": "replays/e988ae6c9fbc347d76ed07477480f684.json",
+      "verifiedAt": "2026-10-13T22:24:58.520Z"
     },
     {
       "name": "Kobi💯 first attempt",
