@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-13T22:24:58.521Z",
+  "updated": "2026-10-13T23:02:05.560Z",
   "entries": [
     {
       "name": "Human",
@@ -1302,6 +1302,27 @@
       "hybridMovementMatches": 876,
       "hybridMovementFrames": 8011,
       "replay": "replays/3ab6ec9d88a201a3267cac65390517b6.json"
+    },
+    {
+      "name": "unknown",
+      "github": null,
+      "submitter": "011f8fbdd2305ed0",
+      "board": "hybrid",
+      "score": 4,
+      "wins": 4,
+      "losses": 15,
+      "doubleKills": 1,
+      "rounds": 20,
+      "seed": 2978867848,
+      "frames": 7902,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.17754998734497596,
+      "hybridMovementMatches": 1403,
+      "hybridMovementFrames": 7902,
+      "issue": 99,
+      "trackHash": "b9f2b16e64a0ecc3fe99057a317ccc12",
+      "replay": "replays/b9f2b16e64a0ecc3fe99057a317ccc12.json",
+      "verifiedAt": "2026-10-13T23:02:05.559Z"
     },
     {
       "name": "rekursion",
