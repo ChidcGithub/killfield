@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-13T23:02:05.560Z",
+  "updated": "2026-10-14T02:50:24.283Z",
   "entries": [
     {
       "name": "Human",
@@ -1113,6 +1113,27 @@
       "hybridMovementMatches": 341,
       "hybridMovementFrames": 1544,
       "replay": "replays/3c29bdaa84d7da6b8c26ecbb37c4c805.json"
+    },
+    {
+      "name": "unknown",
+      "github": null,
+      "submitter": "011f8fbdd2305ed0",
+      "board": "hybrid",
+      "score": 5,
+      "wins": 5,
+      "losses": 10,
+      "doubleKills": 2,
+      "rounds": 17,
+      "seed": 3999955498,
+      "frames": 5693,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.14913051115404882,
+      "hybridMovementMatches": 849,
+      "hybridMovementFrames": 5693,
+      "issue": 100,
+      "trackHash": "f3397ed22f1e4b38cf46c9a6c77bfe2c",
+      "replay": "replays/f3397ed22f1e4b38cf46c9a6c77bfe2c.json",
+      "verifiedAt": "2026-10-14T02:50:24.282Z"
     },
     {
       "name": "Corderox1 (5-15)",
