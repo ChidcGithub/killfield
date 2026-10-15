@@ -1,6 +1,27 @@
 {
-  "updated": "2026-10-15T10:58:13.016Z",
+  "updated": "2026-10-15T11:40:43.561Z",
   "entries": [
+    {
+      "name": "Human",
+      "github": null,
+      "submitter": "615eabfad3c705ea",
+      "board": "laika",
+      "score": 91,
+      "wins": 91,
+      "losses": 65,
+      "doubleKills": 44,
+      "rounds": 200,
+      "seed": 1039600904,
+      "frames": 53921,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.18452921867176053,
+      "hybridMovementMatches": 9950,
+      "hybridMovementFrames": 53921,
+      "issue": 104,
+      "trackHash": "f0d34e0d49ac79d398e62b8e7d54b8f8",
+      "replay": "replays/f0d34e0d49ac79d398e62b8e7d54b8f8.json",
+      "verifiedAt": "2026-10-15T11:40:43.561Z"
+    },
     {
       "name": "Human",
       "github": null,
