@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-16T16:12:28.425Z",
+  "updated": "2026-10-16T21:31:41.945Z",
   "entries": [
     {
       "name": "Human",
@@ -945,6 +945,27 @@
       "trackHash": "4d2ba7106f223c9cc6773891ff330942",
       "verifiedAt": "2026-09-29T12:57:00.475Z",
       "replay": "replays/4d2ba7106f223c9cc6773891ff330942.json"
+    },
+    {
+      "name": "still my lucky number",
+      "github": null,
+      "submitter": "011f8fbdd2305ed0",
+      "board": "hybrid",
+      "score": 8,
+      "wins": 8,
+      "losses": 15,
+      "doubleKills": 3,
+      "rounds": 26,
+      "seed": 2522481165,
+      "frames": 9260,
+      "playerClass": "human",
+      "hybridMovementMatch": 0.14935205183585312,
+      "hybridMovementMatches": 1383,
+      "hybridMovementFrames": 9260,
+      "issue": 108,
+      "trackHash": "63ed86f178164f16f758325bf9aeef67",
+      "replay": "replays/63ed86f178164f16f758325bf9aeef67.json",
+      "verifiedAt": "2026-10-16T21:31:41.945Z"
     },
     {
       "name": "pyroghost htf dy kl hybr",
