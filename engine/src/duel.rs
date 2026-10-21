@@ -340,10 +340,57 @@ impl DuelState {
         self.own_history.record(action);
     }
 
+    /// Record an action for an arbitrary seat (0 = tank 0, 1 = tank 1).
+    pub fn record_action_for(&mut self, seat: usize, action: u16) {
+        if seat == 0 {
+            self.own_history.record(action);
+        } else {
+            self.opponent_history.record(action);
+        }
+    }
+
+    pub fn history_for(&self, seat: usize) -> SeatHistory {
+        if seat == 0 {
+            SeatHistory { frames: self.frames, ..self.own_history }
+        } else {
+            SeatHistory { frames: self.frames, ..self.opponent_history }
+        }
+    }
+
+    /// Clone the per-frame state for a training-only search teacher.
+    /// Only external (frozen-policy) opponents can be forked; MPC owns an
+    /// agent with caches that are intentionally not cloned.
+    pub fn fork_for_search(&self) -> Option<Self> {
+        if self.agent.is_some() {
+            return None;
+        }
+        Some(Self {
+            opponent: self.opponent,
+            agent: None,
+            frames: self.frames,
+            outcome: self.outcome,
+            start_round: self.start_round,
+            prev_pose: self.prev_pose,
+            boxes: self.boxes.clone(),
+            shots_fired: self.shots_fired,
+            hits: self.hits,
+            own_history: self.own_history,
+            opponent_history: self.opponent_history,
+        })
+    }
+
     /// How many frames chose a different action than the frame before. This is
     /// what `style_bonus` grades, and it counts the policy's seat only.
     pub fn action_changes(&self) -> u32 {
         self.own_history.changes
+    }
+
+    pub fn action_changes_for(&self, seat: usize) -> u32 {
+        if seat == 0 {
+            self.own_history.changes
+        } else {
+            self.opponent_history.changes
+        }
     }
 
     /// Each seat's own recent-action history, stamped with the round's frame
@@ -374,6 +421,17 @@ impl DuelState {
     /// As `before_step`, but for an opponent whose controller lives outside the
     /// engine. `opponent_action` is ignored unless this slot is running one.
     pub fn before_step_with(&mut self, game: &mut Game, opponent_action: Option<u16>) {
+        self.before_step_for(game, 0, opponent_action);
+    }
+
+    /// Seat-generic version: `learner` is the controlled tank; the supplied
+    /// action belongs to `1 - learner`.
+    pub fn before_step_for(
+        &mut self,
+        game: &mut Game,
+        learner: usize,
+        opponent_action: Option<u16>,
+    ) {
         self.prev_pose = poses(game);
         if let Some(agent) = self.agent.as_mut() {
             if game.tanks[1].alive && !game.frozen {
@@ -383,9 +441,14 @@ impl DuelState {
         }
         if self.opponent.is_external() {
             if let Some(action) = opponent_action {
-                self.opponent_history.record(action);
-                if game.tanks[1].alive && !game.frozen {
-                    apply_duel_action(game, 1, action);
+                if learner == 0 {
+                    self.opponent_history.record(action);
+                } else {
+                    self.own_history.record(action);
+                }
+                let opponent = 1 - learner;
+                if game.tanks[opponent].alive && !game.frozen {
+                    apply_duel_action(game, opponent, action);
                 }
             }
         }

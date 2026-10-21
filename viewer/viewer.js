@@ -52,7 +52,7 @@ import {
   RANKED_OPENING_DELAY_SECONDS,
   SessionRecorder,
   readObservation,
-} from "./src/ranked.js?v=replay-fast-seek";
+} from "./src/ranked.js?v=anchor";
 import {
   buildStamps, buildSubmission, openSubmissionIssue, submitToGateway,
 } from "./src/submit.js?v=chunked-replay";
@@ -101,7 +101,21 @@ const ROLE_COLORS = {
   red: { base: "#9E101B", turret: "#D82432" },
   black: { base: "#17191C", turret: "#35383D" },
 };
-const CONTROLLER_NAMES = { killfield: "Killfield", laika: "Laika", hybrid: "Hybrid" };
+const CONTROLLER_NAMES = {
+  killfield: "Killfield", laika: "Laika", hybrid: "Hybrid", hybrid_night: "Hybrid Night", anchor: "Anchor",
+};
+const MODEL_QUERY = new URLSearchParams(location.search).get("model");
+const NIGHT_MODEL = MODEL_QUERY === "night";
+const ANCHOR_MODEL = MODEL_QUERY === "anchor";
+const HYBRID_ASSETS = {
+  manifest: "assets/hybrid.json?v=05e69111", weights: "assets/hybrid.bin?v=96d48cdf",
+};
+const HYBRID_NIGHT_ASSETS = {
+  manifest: "assets/hybrid_night.json?v=night", weights: "assets/hybrid_night.bin?v=night",
+};
+const ANCHOR_ASSETS = {
+  manifest: "assets/anchor.json?v=anchor75", weights: "assets/anchor.bin?v=anchor75",
+};
 
 /** Which role (red/black) each tank plays this mode. Watch: seat 0 (Left) is
  *  always red, seat 1 (Right) always black. Play: the human is red (the
@@ -365,7 +379,11 @@ let touchFirePressed = false;
 let immediateFirePressed = false;
 
 let wasm = null;
+let wasmBase = null;
+let handleWasm = null;
 let hybridPolicy = null;
+let hybridNightPolicy = null;
+let anchorPolicy = null;
 let scratchPtr = null;
 let openingDelaySeconds = DEFAULT_OPENING_DELAY_SECONDS;
 try {
@@ -995,6 +1013,12 @@ function controllerForSeat(seat) {
   return mode === "play" ? (seat === 1 ? "human" : playOpponentSelect.value) : seatController[seat];
 }
 
+function policyForController(controller) {
+  if (controller === "hybrid_night") return hybridNightPolicy ?? hybridPolicy;
+  if (controller === "anchor") return anchorPolicy ?? hybridPolicy;
+  return hybridPolicy;
+}
+
 function activeTankColors() {
   return [0, 1].map((seat) => ROLE_COLORS[roleForSeat(seat)]);
 }
@@ -1307,8 +1331,12 @@ function durationForReplay() {
 }
 
 function resetReplayEngine() {
-  if (!replayPlayback || wasm === null) return;
-  if (handle !== null) wasm.kf_free(handle);
+  if (!replayPlayback || wasmBase === null) return;
+  if (handle !== null) (handleWasm ?? wasm).kf_free(handle);
+  handle = null;
+  wasm = wasmBase;
+  handleWasm = wasm;
+  scratchPtr = wasm.kf_scratch_ptr();
   const { record } = replayPlayback;
   handle = wasm.kf_new(record.seed, record.opponent === "laika" ? 1 : 0);
   opponentDriver = new OpponentDriver({
@@ -1459,9 +1487,16 @@ async function loadBoardReplay(trackHash) {
 /** Any new handle is a new match, so it ends whatever ranked session was
  *  running — a reroll, a different opponent and a mode switch all land here. */
 function newGame({ ranked: startRanked = false } = {}) {
+  if (mode === "replay") return;
   closeRankedSession();
   const seed = (Math.random() * 0xffffffff) >>> 0;
-  if (handle !== null) wasm.kf_free(handle);
+  const watchControllers = mode === "watch"
+    ? controllerSelects.map((select) => select.value) : null;
+  if (handle !== null) (handleWasm ?? wasm).kf_free(handle);
+  handle = null;
+  wasm = wasmBase;
+  handleWasm = wasm;
+  scratchPtr = wasm.kf_scratch_ptr();
 
   syncPlayOpponentControls();
   opponentDriver = null;
@@ -1471,18 +1506,18 @@ function newGame({ ranked: startRanked = false } = {}) {
     // Laika's script — so opp_l1 is always on when Killfield is playing.
     const opponent = playOpponentSelect.value;
     handle = wasm.kf_new(seed, opponent === "laika" ? 1 : 0);
-    hybridSeats = opponent === "hybrid" ? [0] : [];
+    hybridSeats = opponent === "hybrid" || opponent === "hybrid_night" || opponent === "anchor" ? [0] : [];
     // The delay queue, the opening pause and Killfield's attachment all live
     // in the driver, which the leaderboard verifier replays with verbatim.
     opponentDriver = new OpponentDriver({
       opponent,
       delayFrames: reactionDelayFrames,
       openingDelayFrames: openingDelayFrameCount(),
-      policy: hybridPolicy,
+      policy: policyForController(opponent),
     });
     opponentDriver.attach(wasm, handle);
   } else {
-    seatController = controllerSelects.map((select) => select.value);
+    seatController = watchControllers;
     let laikaMask = 0;
     seatController.forEach((c, i) => { if (c === "laika") laikaMask |= (1 << i); });
     handle = wasm.kf_new(seed, laikaMask);
@@ -1494,7 +1529,7 @@ function newGame({ ranked: startRanked = false } = {}) {
         // current buttons" model instead.
         const otherIsLaika = seatController[1 - i] === "laika";
         wasm.kf_attach_mpc(handle, i, i === 0 ? 7 : 11, KILLFIELD_RAYS, otherIsLaika ? 0 : 1);
-      } else if (c === "hybrid") {
+      } else if (c === "hybrid" || c === "hybrid_night" || c === "anchor") {
         hybridSeats.push(i);
       }
     });
@@ -1562,7 +1597,9 @@ function syncRankedUI() {
   const eligible = rankedResult !== null && rankedResult.stats.wins >= MIN_SUBMITTABLE_WINS;
   set(rankedRow, "hidden", mode !== "play");
   set(rankedStartButton, "textContent", ranked ? s.rankedStop : s.rankedStart);
-  rankedStartButton.disabled = rankedSubmitting;
+  rankedStartButton.disabled = rankedSubmitting || NIGHT_MODEL
+    || playOpponentSelect.value === "hybrid_night"
+    || playOpponentSelect.value === "anchor";
   rankedStartButton.classList.toggle("active", Boolean(ranked));
   set(rankedUploadButton, "textContent", rankedSubmitting ? s.rankedSubmittingButton : s.rankedUpload);
   set(rankedWatchButton, "textContent", eligible && !rankedSubmitted
@@ -1786,6 +1823,8 @@ async function watchRankedReplay() {
  *  pause, and the turn-rate assist off. Anything that would make the opponent
  *  easier is reset here rather than merely rejected later. */
 function startRankedSession() {
+  if (NIGHT_MODEL || playOpponentSelect.value === "hybrid_night"
+      || playOpponentSelect.value === "anchor") return;
   if (mode !== "play") setMode("play");
   reactionDelayFrames = RANKED_DELAY_FRAMES;
   reactionDelaySelect.value = String(RANKED_DELAY_FRAMES);
@@ -1885,15 +1924,21 @@ function updateScoreboard() {
  * from the policy.
  */
 function driveHybridSeats() {
-  if (hybridPolicy === null) return null;
+  if (hybridPolicy === null && hybridNightPolicy === null) return null;
   if (mode === "play") {
     const decision = opponentDriver ? opponentDriver.decide(wasm, handle) : null;
-    if (decision) opponentDriver.apply(wasm, handle, decision.action);
+    if (decision) {
+      opponentDriver.apply(wasm, handle, decision.action);
+    }
     return decision;
   }
   for (const seat of hybridSeats) {
+    const controller = seatController[seat];
+    const policy = policyForController(controller);
+    if (!policy) continue;
     const { observation, mask, dodge } = readObservation(wasm, handle, seat);
-    wasm.kf_set_hybrid_action(handle, seat, hybridPolicy.act(observation, mask, dodge));
+    let action = policy.act(observation, mask, dodge);
+    wasm.kf_set_hybrid_action(handle, seat, action);
   }
   return null;
 }
@@ -2146,18 +2191,42 @@ function toggleLanguage() {
 // -------------------------------------------------------------------- boot
 
 async function boot() {
-  const [wasmBytes, hybrid] = await Promise.all([
+  const [baseBytes, hybrid] = await Promise.all([
     fetch("kf_engine.wasm?v=7aea2a29").then((res) => res.arrayBuffer()),
-    HybridPolicy.load("assets/hybrid.json?v=05e69111", "assets/hybrid.bin?v=96d48cdf"),
+    HybridPolicy.load(HYBRID_ASSETS.manifest, HYBRID_ASSETS.weights),
   ]);
   // Hashed before instantiation so a record names the exact binaries it is
   // reproducible against, rather than a version string someone could bump.
-  binaryStamps = await buildStamps(new Uint8Array(wasmBytes), hybrid.weights);
-  const wasmResult = await WebAssembly.instantiate(wasmBytes, {});
-  wasm = wasmResult.instance.exports;
+  binaryStamps = await buildStamps(new Uint8Array(baseBytes), hybrid.weights);
+  const baseResult = await WebAssembly.instantiate(baseBytes, {});
+  wasmBase = baseResult.instance.exports;
+  wasm = wasmBase;
   hybridPolicy = hybrid;
+  try {
+    hybridNightPolicy = await HybridPolicy.load(
+      HYBRID_NIGHT_ASSETS.manifest, HYBRID_NIGHT_ASSETS.weights,
+    );
+  } catch (error) {
+    // Night is an optional policy export; the base game remains usable.
+    console.warn("Hybrid Night assets unavailable", error);
+    hybridNightPolicy = null;
+  }
+  try {
+    anchorPolicy = await HybridPolicy.load(ANCHOR_ASSETS.manifest, ANCHOR_ASSETS.weights);
+  } catch (error) {
+    console.warn("Anchor assets unavailable", error);
+    anchorPolicy = null;
+  }
+  if (NIGHT_MODEL) {
+    controllerSelects[0].value = "hybrid_night";
+    playOpponentSelect.value = "hybrid_night";
+  } else if (ANCHOR_MODEL) {
+    controllerSelects[0].value = "anchor";
+    playOpponentSelect.value = "anchor";
+  }
   scratchPtr = wasm.kf_scratch_ptr();
-  if (wasm.kf_hybrid_schema_version() !== 24 || wasm.kf_hybrid_observation_len() !== HYBRID_OBS_DIM + HYBRID_BULLET_SLOTS) {
+  if (wasmBase.kf_hybrid_schema_version() !== 24
+      || wasmBase.kf_hybrid_observation_len() !== HYBRID_OBS_DIM + HYBRID_BULLET_SLOTS) {
     throw new Error("Hybrid observation layout mismatch between engine and viewer");
   }
   initialiseThemedPickers();
