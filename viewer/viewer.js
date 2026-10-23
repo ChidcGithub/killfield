@@ -35,7 +35,7 @@ import {
 import { SoundEffects } from "./src/audio.js";
 import { Rng } from "./src/rng.js";
 import { interpolatePredictedPose, simulationBudget } from "./src/low-latency.js";
-import { HybridPolicy } from "./src/hybrid.js?v=9d9f54b9";
+import { HybridPolicy } from "./src/hybrid.js?v=anchorv3";
 import {
   HUMAN_SEAT, LIMITS, MIN_SUBMITTABLE_WINS, NO_ACTION, summariseResults,
 } from "./src/replay.js?v=replay-player";
@@ -102,19 +102,27 @@ const ROLE_COLORS = {
   black: { base: "#17191C", turret: "#35383D" },
 };
 const CONTROLLER_NAMES = {
-  killfield: "Killfield", laika: "Laika", hybrid: "Hybrid", hybrid_night: "Hybrid Night", anchor: "Anchor",
+  killfield: "Killfield", laika: "Laika", hybrid: "Hybrid", hybrid_night: "Hybrid Night", hybrid_night2: "Hybrid Night2", anchor: "Anchor", anchor_v3: "Anchor V3",
 };
 const MODEL_QUERY = new URLSearchParams(location.search).get("model");
 const NIGHT_MODEL = MODEL_QUERY === "night";
+const NIGHT2_MODEL = MODEL_QUERY === "night2";
 const ANCHOR_MODEL = MODEL_QUERY === "anchor";
+const ANCHOR_V3_MODEL = MODEL_QUERY === "anchor_v3";
 const HYBRID_ASSETS = {
   manifest: "assets/hybrid.json?v=05e69111", weights: "assets/hybrid.bin?v=96d48cdf",
 };
 const HYBRID_NIGHT_ASSETS = {
   manifest: "assets/hybrid_night.json?v=night", weights: "assets/hybrid_night.bin?v=night",
 };
+const HYBRID_NIGHT2_ASSETS = {
+  manifest: "assets/hybrid_night2.json?v=night2", weights: "assets/hybrid_night2.bin?v=night2",
+};
 const ANCHOR_ASSETS = {
-  manifest: "assets/anchor.json?v=anchor75", weights: "assets/anchor.bin?v=anchor75",
+  manifest: "assets/anchor.json?v=anchor68", weights: "assets/anchor.bin?v=anchor68",
+};
+const ANCHOR_V3_ASSETS = {
+  manifest: "assets/anchor_v3.json?v=v3", weights: "assets/anchor_v3.bin?v=v3",
 };
 
 /** Which role (red/black) each tank plays this mode. Watch: seat 0 (Left) is
@@ -383,7 +391,9 @@ let wasmBase = null;
 let handleWasm = null;
 let hybridPolicy = null;
 let hybridNightPolicy = null;
+let hybridNight2Policy = null;
 let anchorPolicy = null;
+let anchorV3Policy = null;
 let scratchPtr = null;
 let openingDelaySeconds = DEFAULT_OPENING_DELAY_SECONDS;
 try {
@@ -1015,7 +1025,9 @@ function controllerForSeat(seat) {
 
 function policyForController(controller) {
   if (controller === "hybrid_night") return hybridNightPolicy ?? hybridPolicy;
+  if (controller === "hybrid_night2") return hybridNight2Policy ?? hybridPolicy;
   if (controller === "anchor") return anchorPolicy ?? hybridPolicy;
+  if (controller === "anchor_v3") return anchorV3Policy ?? hybridPolicy;
   return hybridPolicy;
 }
 
@@ -1506,7 +1518,9 @@ function newGame({ ranked: startRanked = false } = {}) {
     // Laika's script — so opp_l1 is always on when Killfield is playing.
     const opponent = playOpponentSelect.value;
     handle = wasm.kf_new(seed, opponent === "laika" ? 1 : 0);
-    hybridSeats = opponent === "hybrid" || opponent === "hybrid_night" || opponent === "anchor" ? [0] : [];
+    hybridSeats = opponent === "hybrid" || opponent === "hybrid_night"
+      || opponent === "hybrid_night2" || opponent === "anchor"
+      || opponent === "anchor_v3" ? [0] : [];
     // The delay queue, the opening pause and Killfield's attachment all live
     // in the driver, which the leaderboard verifier replays with verbatim.
     opponentDriver = new OpponentDriver({
@@ -1529,7 +1543,8 @@ function newGame({ ranked: startRanked = false } = {}) {
         // current buttons" model instead.
         const otherIsLaika = seatController[1 - i] === "laika";
         wasm.kf_attach_mpc(handle, i, i === 0 ? 7 : 11, KILLFIELD_RAYS, otherIsLaika ? 0 : 1);
-      } else if (c === "hybrid" || c === "hybrid_night" || c === "anchor") {
+      } else if (c === "hybrid" || c === "hybrid_night" || c === "hybrid_night2"
+          || c === "anchor" || c === "anchor_v3") {
         hybridSeats.push(i);
       }
     });
@@ -1597,9 +1612,11 @@ function syncRankedUI() {
   const eligible = rankedResult !== null && rankedResult.stats.wins >= MIN_SUBMITTABLE_WINS;
   set(rankedRow, "hidden", mode !== "play");
   set(rankedStartButton, "textContent", ranked ? s.rankedStop : s.rankedStart);
-  rankedStartButton.disabled = rankedSubmitting || NIGHT_MODEL
+  rankedStartButton.disabled = rankedSubmitting || NIGHT_MODEL || NIGHT2_MODEL
     || playOpponentSelect.value === "hybrid_night"
-    || playOpponentSelect.value === "anchor";
+    || playOpponentSelect.value === "hybrid_night2"
+    || playOpponentSelect.value === "anchor"
+    || playOpponentSelect.value === "anchor_v3";
   rankedStartButton.classList.toggle("active", Boolean(ranked));
   set(rankedUploadButton, "textContent", rankedSubmitting ? s.rankedSubmittingButton : s.rankedUpload);
   set(rankedWatchButton, "textContent", eligible && !rankedSubmitted
@@ -1823,8 +1840,10 @@ async function watchRankedReplay() {
  *  pause, and the turn-rate assist off. Anything that would make the opponent
  *  easier is reset here rather than merely rejected later. */
 function startRankedSession() {
-  if (NIGHT_MODEL || playOpponentSelect.value === "hybrid_night"
-      || playOpponentSelect.value === "anchor") return;
+  if (NIGHT_MODEL || NIGHT2_MODEL || playOpponentSelect.value === "hybrid_night"
+      || playOpponentSelect.value === "hybrid_night2"
+      || playOpponentSelect.value === "anchor"
+      || playOpponentSelect.value === "anchor_v3") return;
   if (mode !== "play") setMode("play");
   reactionDelayFrames = RANKED_DELAY_FRAMES;
   reactionDelaySelect.value = String(RANKED_DELAY_FRAMES);
@@ -1924,7 +1943,8 @@ function updateScoreboard() {
  * from the policy.
  */
 function driveHybridSeats() {
-  if (hybridPolicy === null && hybridNightPolicy === null) return null;
+  if (hybridPolicy === null && hybridNightPolicy === null && hybridNight2Policy === null
+      && anchorV3Policy === null) return null;
   if (mode === "play") {
     const decision = opponentDriver ? opponentDriver.decide(wasm, handle) : null;
     if (decision) {
@@ -2212,17 +2232,39 @@ async function boot() {
     hybridNightPolicy = null;
   }
   try {
+    hybridNight2Policy = await HybridPolicy.load(
+      HYBRID_NIGHT2_ASSETS.manifest, HYBRID_NIGHT2_ASSETS.weights,
+    );
+  } catch (error) {
+    console.warn("Hybrid Night2 assets unavailable", error);
+    hybridNight2Policy = null;
+  }
+  try {
     anchorPolicy = await HybridPolicy.load(ANCHOR_ASSETS.manifest, ANCHOR_ASSETS.weights);
   } catch (error) {
     console.warn("Anchor assets unavailable", error);
     anchorPolicy = null;
   }
+  try {
+    anchorV3Policy = await HybridPolicy.load(
+      ANCHOR_V3_ASSETS.manifest, ANCHOR_V3_ASSETS.weights,
+    );
+  } catch (error) {
+    console.warn("Anchor V3 assets unavailable", error);
+    anchorV3Policy = null;
+  }
   if (NIGHT_MODEL) {
     controllerSelects[0].value = "hybrid_night";
     playOpponentSelect.value = "hybrid_night";
+  } else if (NIGHT2_MODEL && hybridNight2Policy) {
+    controllerSelects[0].value = "hybrid_night2";
+    playOpponentSelect.value = "hybrid_night2";
   } else if (ANCHOR_MODEL) {
     controllerSelects[0].value = "anchor";
     playOpponentSelect.value = "anchor";
+  } else if (ANCHOR_V3_MODEL && anchorV3Policy) {
+    controllerSelects[0].value = "anchor_v3";
+    playOpponentSelect.value = "anchor_v3";
   }
   scratchPtr = wasm.kf_scratch_ptr();
   if (wasmBase.kf_hybrid_schema_version() !== 24

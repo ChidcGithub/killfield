@@ -1,6 +1,6 @@
 {
   "format": "killfield-hybrid-f32-v1",
-  "checkpoint": "last.pt",
+  "checkpoint": "best.pt",
   "schema": 24,
   "observation": 1028,
   "bullet_slots": 10,
