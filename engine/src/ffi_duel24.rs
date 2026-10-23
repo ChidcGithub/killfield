@@ -1,5 +1,6 @@
 use crate::duel::{
-    apply_duel_action, duel_game, duel_settle, DuelState, Opponent, DUEL_ACTIONS, DUEL_FRAMES,
+    apply_duel_action, duel_game, duel_settle, duel_settle_for, DuelState, Opponent, DUEL_ACTIONS,
+    DUEL_FRAMES,
     DUEL_GRACE_FRAMES,
 };
 use crate::duel_obs::{
@@ -543,20 +544,18 @@ impl DuelSearch {
                             .map(|a| a.min(DUEL_ACTIONS as u16 - 1));
                         slot.state.before_step_for(&mut slot.game, learner, supplied);
                         let events = slot.game.step();
-                        let step = duel_settle(&slot.game, &mut slot.state, &events);
+                        let step = duel_settle_for(&slot.game, &mut slot.state, &events, learner);
                         slot.safety = dodge_safety(&slot.game, learner, DODGE_HORIZON)
                             .iter().copied().fold(1.0f32, f32::min);
                         Slot::encode_into_seat(slot, learner);
-                        let outcome = match step.outcome {
-                            crate::duel::Outcome::Running => 0,
-                            crate::duel::Outcome::Win => if learner == 0 { 1 } else { 2 },
-                            crate::duel::Outcome::Loss => if learner == 0 { 2 } else { 1 },
-                            crate::duel::Outcome::DoubleDeath => 3,
-                            crate::duel::Outcome::Draw => 4,
-                        };
+                        // Settle grades the branch from the learner's own
+                        // chair: the outcome is already learner-relative and
+                        // the reward prices the learner's shot/hit/style
+                        // stats. Negating seat 0's reward would turn a draw
+                        // or a double death into a seat-1 win, so don't.
+                        let outcome = step.outcome.as_u8();
                         slot.done = step.outcome.terminal();
-                        let reward = if learner == 0 { step.reward as f32 } else { -(step.reward as f32) };
-                        out[k] = (reward, slot.done as u8, outcome);
+                        out[k] = (step.reward as f32, slot.done as u8, outcome);
                     }
                 });
             }

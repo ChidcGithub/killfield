@@ -195,6 +195,7 @@ def parse_args():
     p.add_argument("--eval-laika-games", type=int, default=100)
     p.add_argument("--eval-mpc-games", type=int, default=50)
     p.add_argument("--eval-h2h-games", type=int, default=100)
+    p.add_argument("--eval-matrix-games", type=int, default=48)
     p.add_argument("--save-every", type=int, default=10)
     p.add_argument("--snapshot-every", type=int, default=0)
     p.add_argument("--expert-it", action="store_true",
@@ -234,79 +235,37 @@ class League:
     def __init__(self, config, device: torch.device):
         self.config = config
         self.device = device
+        seed = config.seed & 0xFFFFFFFF
+        pool_from = list(config.pool_from) if config.pool_share > 0.0 else []
+        specs: list[tuple[str, float, int, int, bool]] = []
+        if config.laika_share > 0.0:
+            specs.append(("laika", config.laika_share, seed + 11, OPPONENT_LAIKA, False))
+        if config.frozen_share > 0.0:
+            specs.append(("frozen", config.frozen_share, seed + 22, OPPONENT_FROZEN, True))
         if config.mpc_share > 0.0:
-            if config.best_share > 0.0 or (config.pool_share > 0.0 and config.pool_from):
-                raise ValueError("mpc-share combination with best/pool not supported")
-            raw = [config.laika_share, config.frozen_share,
-                   config.mpc_share, config.self_share]
-            counts = split_counts(config.envs, raw)
-            seed = config.seed & 0xFFFFFFFF
-            threads = max(1, config.threads // 4)
-            self.names = ["laika", "frozen", "mpc", "self"]
-            self.counts = counts
-            self.offsets = np.cumsum([0] + counts).tolist()
-            self.envs = [
-                DuelVec(counts[0], seed + 11, OPPONENT_LAIKA, threads),
-                DuelVec(counts[1], seed + 22, OPPONENT_FROZEN, threads),
-                DuelVec(counts[2], seed + 55, OPPONENT_MPC, threads),
-                DuelVec(counts[3], seed + 33, OPPONENT_FROZEN, threads),
-            ]
-            self.external = [False, True, False, True]
-        elif config.pool_share > 0.0 and config.pool_from:
-            pool_count = len(config.pool_from)
-            per_pool = config.pool_share / pool_count
-            shares = [config.laika_share, config.frozen_share, config.self_share]
-            shares.extend([per_pool] * pool_count)
-            counts = split_counts(config.envs, shares)
-            seed = config.seed & 0xFFFFFFFF
-            threads = max(1, config.threads // len(shares))
-            self.names = ["laika", "frozen", "self"] + [
-                f"pool{i}" for i in range(pool_count)
-            ]
-            self.counts = counts
-            self.offsets = np.cumsum([0] + counts).tolist()
-            self.envs = [
-                DuelVec(counts[0], seed + 11, OPPONENT_LAIKA, threads),
-                DuelVec(counts[1], seed + 22, OPPONENT_FROZEN, threads),
-                DuelVec(counts[2], seed + 33, OPPONENT_FROZEN, threads),
-            ]
-            for i in range(pool_count):
-                self.envs.append(
-                    DuelVec(counts[3 + i], seed + 100 + i * 11, OPPONENT_FROZEN, threads)
+            specs.append(("mpc", config.mpc_share, seed + 55, OPPONENT_MPC, False))
+        if config.self_share > 0.0:
+            specs.append(("self", config.self_share, seed + 33, OPPONENT_FROZEN, True))
+        if config.best_share > 0.0:
+            specs.append(("best", config.best_share, seed + 44, OPPONENT_FROZEN, True))
+        if pool_from:
+            per_pool = config.pool_share / len(pool_from)
+            for i in range(len(pool_from)):
+                specs.append(
+                    (f"pool{i}", per_pool, seed + 100 + i * 11, OPPONENT_FROZEN, True)
                 )
-            self.external = [False] + [True] * (2 + pool_count)
-        elif config.best_share > 0.0:
-            counts = split_counts(
-                config.envs,
-                (config.laika_share, config.frozen_share, config.best_share, config.self_share),
-            )
-            seed = config.seed & 0xFFFFFFFF
-            threads = max(1, config.threads // 4)
-            self.names = ["laika", "frozen", "best", "self"]
-            self.counts = counts
-            self.offsets = np.cumsum([0] + counts).tolist()
-            self.envs = [
-                DuelVec(counts[0], seed + 11, OPPONENT_LAIKA, threads),
-                DuelVec(counts[1], seed + 22, OPPONENT_FROZEN, threads),
-                DuelVec(counts[2], seed + 33, OPPONENT_FROZEN, threads),
-                DuelVec(counts[3], seed + 44, OPPONENT_FROZEN, threads),
-            ]
-            self.external = [False, True, True, True]
-        else:
-            counts = split_counts(
-                config.envs, (config.laika_share, config.frozen_share, config.self_share)
-            )
-            seed = config.seed & 0xFFFFFFFF
-            threads = max(1, config.threads // 3)
-            self.names = ["laika", "frozen", "self"]
-            self.counts = counts
-            self.offsets = np.cumsum([0] + counts).tolist()
-            self.envs = [
-                DuelVec(counts[0], seed + 11, OPPONENT_LAIKA, threads),
-                DuelVec(counts[1], seed + 22, OPPONENT_FROZEN, threads),
-                DuelVec(counts[2], seed + 33, OPPONENT_FROZEN, threads),
-            ]
-            self.external = [False, True, True]
+        if not specs:
+            raise ValueError("no league lanes configured")
+        counts = split_counts(config.envs, [spec[1] for spec in specs])
+        threads = max(1, config.threads // max(1, len(specs)))
+        self.names = [spec[0] for spec in specs]
+        self.counts = counts
+        self.offsets = np.cumsum([0] + counts).tolist()
+        self.envs = [
+            DuelVec(counts[i], spec[2], spec[3], threads)
+            for i, spec in enumerate(specs)
+        ]
+        self.external = [spec[4] for spec in specs]
 
         # Drop zero-count lanes outright: empty vec envs crash downstream
         # categorical sampling and reward bookkeeping.
@@ -875,14 +834,20 @@ def main():
         for path in config.pool_from:
             if not path.exists():
                 raise FileNotFoundError(path)
-            payload = torch.load(path, map_location=device, weights_only=False)
             pool_net = load_default(device)
-            pool_net.load_state_dict(payload.get("model", payload), strict=False)
+            if path.suffix == ".json":
+                pool_net.load_from_assets(path, path.with_suffix(".bin"))
+            else:
+                payload = torch.load(path, map_location=device, weights_only=False)
+                pool_net.load_state_dict(payload.get("model", payload), strict=False)
             pool_net = pool_net.to(device).eval()
             for p in pool_net.parameters():
                 p.requires_grad_(False)
             pool_models.append(pool_net)
             print(f"pool opponent from {path}", flush=True)
+    matrix_items = [("v1_hybrid", frozen)]
+    for p, net in zip(config.pool_from, pool_models):
+        matrix_items.append((Path(p).stem, net))
     if config.freeze_trunk:
         frozen_prefixes = ("map0.", "map2.", "map5.", "bullets0.", "bullets2.",
                            "scalars0.", "trunk0.")
@@ -1012,16 +977,27 @@ def main():
             ev_laika = evaluate(model, OPPONENT_LAIKA, config.eval_laika_games, 32, config.seed + 1000, device)
             ev_mpc = evaluate(model, OPPONENT_MPC, config.eval_mpc_games, 8, config.seed + 2000, device)
             ev_h2h = evaluate_h2h(model, frozen, config.eval_h2h_games, 32, config.seed + 3000, device)
+            matrix = {}
+            for mi, (label, opp_model) in enumerate(matrix_items):
+                matrix[label] = evaluate_h2h(
+                    model, opp_model, config.eval_matrix_games, 16,
+                    config.seed + 5000 + mi, device,
+                )
             score = 0.4 * ev_laika["win_rate"] + 0.3 * ev_mpc["win_rate"] + 0.3 * ev_h2h["win_rate"]
+            matrix_text = " ".join(
+                f"{label}={ev['win_rate']:.3f}" for label, ev in matrix.items()
+            )
             print(
                 f"EVAL u{update} laika={ev_laika['win_rate']:.3f} mpc={ev_mpc['win_rate']:.3f} "
-                f"h2h={ev_h2h['win_rate']:.3f} score={score:.4f}",
+                f"h2h={ev_h2h['win_rate']:.3f} score={score:.4f}"
+                + (f" | {matrix_text}" if matrix_text else ""),
                 flush=True,
             )
             with (config.output / "evals.jsonl").open("a") as handle:
                 handle.write(json.dumps({
                     "update": update, "total_steps": total_steps, "score": score,
                     "laika": ev_laika, "mpc": ev_mpc, "h2h": ev_h2h,
+                    "matrix": {label: ev for label, ev in matrix.items()},
                 }) + "\n")
             if score > best_score:
                 best_score = score
@@ -1030,7 +1006,8 @@ def main():
                     "update": update,
                     "total_steps": total_steps,
                     "best_score": best_score,
-                    "evals": {"laika": ev_laika, "mpc": ev_mpc, "h2h": ev_h2h},
+                    "evals": {"laika": ev_laika, "mpc": ev_mpc, "h2h": ev_h2h,
+                              "matrix": dict(matrix)},
                 }, config.output / "checkpoints" / "best.pt")
         update += 1
     torch.save({
